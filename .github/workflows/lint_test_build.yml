@@ -17,16 +17,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ~lint_step
-        run: eslint --ext .jsx --fix src
+        run: | 
+          npx eslint
+          echo "~✅linting passed"
   testing_job:
     needs: linting_job
     runs-on: ubuntu-latest
     steps:
       - name: ~test_step
-        run: vitest run
+        run: |
+          npx vitest run
+          echo "~✅testing passed"
   building_job:
     needs: testing_job
     runs-on: ubuntu-latest
     steps:
       - name: ~build_step
-        run: vite build
+        run: | 
+          npx vite build
+          echo "~✅built project successfully. DONE!"
