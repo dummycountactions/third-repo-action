@@ -1,7 +1,7 @@
 name: lint test deploy
 on: push
 jobs:
-  bring_code:
+  linting_job:
       runs-on: ubuntu-latest
       steps:
           - name: ~Get code
@@ -12,27 +12,39 @@ jobs:
                 node-version: 18
           - name: ~Install dependencies
             run: npm ci
-  linting_job:
-    needs: bring_code
-    runs-on: ubuntu-latest
-    steps:
-      - name: ~lint_step
-        run: | 
-          npm run lint
-          echo "~✅linting passed"
+          - name: ~lint_step
+            run: | 
+              npm run lint
+              echo "~✅linting passed"
   testing_job:
     needs: linting_job
     runs-on: ubuntu-latest
     steps:
-      - name: ~test_step
-        run: |
-          npm run test
-          echo "~✅testing passed"
+        - name: ~Get code
+          uses: actions/checkout@v3
+        - name: ~Install NodeJS
+          uses: actions/setup-node@v3
+          with:
+              node-version: 18
+        - name: ~Install dependencies
+          run: npm ci
+        - name: ~test_step
+          run: |
+            npm run test
+            echo "~✅testing passed"
   building_job:
     needs: testing_job
     runs-on: ubuntu-latest
     steps:
-      - name: ~build_step
-        run: | 
-          npm run build
-          echo "~✅built project successfully. DONE!"
+        - name: ~Get code
+          uses: actions/checkout@v3
+        - name: ~Install NodeJS
+          uses: actions/setup-node@v3
+          with:
+              node-version: 18
+        - name: ~Install dependencies
+          run: npm ci
+        - name: ~build_step
+          run: | 
+                npm run build
+                echo "~✅built project successfully. DONE!"
