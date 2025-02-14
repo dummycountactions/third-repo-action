@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: ~lint_step
         run: | 
-          npx eslint --ext .jsx --fix src
+          npx eslint src/**
           echo "~✅linting passed"
   testing_job:
     needs: linting_job
